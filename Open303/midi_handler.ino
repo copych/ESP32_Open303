@@ -72,6 +72,8 @@ inline void handleCC(uint8_t inChannel, uint8_t cc_number, uint8_t cc_value) {
     case CC_303_WAVEFORM:
       Synth.setWaveform(MIDI_NORM * cc_value);
       break;
+    case  CC_303_PORTAMENTO:
+      break;
     /*
 #define CC_303_PORTATIME    5
 #define CC_303_VOLUME       7

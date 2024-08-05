@@ -2,6 +2,12 @@
 // by copych, 2023
 // Debugging macros
 
+#define JUKEBOX
+#define JUKEBOX_PLAY_ON_START
+#define DEBUG_JUKEBOX
+
+
+#define SYNTH1_MIDI_CHAN        1
 #define DEBUG_ON
 //#define MIDI_VIA_SERIAL
 #define MIDI_VIA_SERIAL2
@@ -72,6 +78,7 @@ MIDI_NAMESPACE::MidiInterface<MIDI_NAMESPACE::SerialMIDI<HardwareSerial, Serial2
 TaskHandle_t SynthTask1;
 //TaskHandle_t SynthTask2;
 const i2s_port_t i2s_num = I2S_NUM_0; // i2s port number
+float bpm = 130.0f;
 
 rosic::Open303 Synth;
 rosic::AcidSequencer Sequencer;
@@ -122,6 +129,9 @@ void setup() {
   MidiInit();
   DEBUG("MIDI Started");
 
+#ifdef JUKEBOX
+  init_midi(); // AcidBanger function
+#endif
 
 	// xTaskCreatePinnedToCore( audio_task1, "SynthTask1", 8000, NULL, (1 | portPRIVILEGE_BIT), &SynthTask1, 0 );
 	// xTaskCreatePinnedToCore( audio_task2, "SynthTask2", 8000, NULL, (1 | portPRIVILEGE_BIT), &SynthTask2, 1 );
@@ -165,6 +175,11 @@ void loop() {
     }
   }
 */
+#ifdef JUKEBOX
+  run_tick();
+  myRandomAddEntropy((uint16_t)(micros() & 0x0000FFFF));
+#endif
+
 }
 
 
@@ -179,7 +194,7 @@ static void audio_task1(void *userData) {
       }
       s1T = micros() - s1t;
     }
-  DEBF("time=%dus , sample=%e\r\n" , s1T, mix_buf_l[0]);
+ // DEBF("time=%dus , sample=%e\r\n" , s1T, mix_buf_l[0]);
     i2s_output();
     
     taskYIELD();
