@@ -60,6 +60,13 @@ Open303::Open303()
   allpass.setMode(OnePoleFilter::ALLPASS);
   notch.setMode(BiquadFilter::BANDREJECT);
 
+  //by copych
+  antiAliasFilter.setSampleRate(2 * SAMPLE_RATE);
+  antiAliasFilter.setMode(BiquadFilter::LOWPASS12);
+  antiAliasFilter.setGain(0.0f);
+  antiAliasFilter.setFrequency(0.5f * SAMPLE_RATE);
+  //end by copych
+
   setSampleRate(sampleRate);
 
   // tweakables:

@@ -250,7 +250,9 @@ namespace rosic
     LeakyIntegrator           rc1, rc2;
     OnePoleFilter             highpass1, highpass2, allpass; 
     BiquadFilter              notch;
-    EllipticQuarterBandFilter antiAliasFilter;
+    //EllipticQuarterBandFilter antiAliasFilter;
+    
+    BiquadFilter              antiAliasFilter;
     AcidSequencer             sequencer;
 
   protected:
@@ -391,7 +393,7 @@ namespace rosic
       tmp  = -oscillator.getSample();         // the raw oscillator signal 
       tmp  = highpass1.getSample(tmp);        // pre-filter highpass
       tmp  = filter.getSample(tmp);           // now it's filtered
-    //  tmp  = antiAliasFilter.getSample(tmp);  // anti-aliasing filtered
+      tmp  = antiAliasFilter.getSample(tmp);  // anti-aliasing filtered
    //   DEBF ("SYNTH: oversampled tmp: %f\r\n", tmp);
 
     }

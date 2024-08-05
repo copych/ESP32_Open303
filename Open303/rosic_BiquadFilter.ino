@@ -74,7 +74,7 @@ void BiquadFilter::calcCoeffs()
       // formula from Robert Bristow Johnson's biquad cookbook:
       sinCos(w, &s, &c);
       float q     = dB2amp(gain);
-      float alpha = s/(2.0*q);
+      float alpha = s/(2.0f*q);
       float scale = 1.0f/(1.0f+alpha);
       a1 = 2.0f*c       * scale;
       a2 = (alpha-1.0f) * scale;

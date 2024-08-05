@@ -114,8 +114,8 @@ typedef unsigned long UINT32;
 #endif
 
 // ...constants for numerical precision issues, denorm, etc.:
-#define TINY FLT_MIN
-#define D_EPS DBL_EPSILON
+#define TINY __FLT_MIN__
+#define D_EPS __FLT_EPSILON__
 
 // define infinity values:
 
