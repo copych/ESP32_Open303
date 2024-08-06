@@ -30,9 +30,16 @@
 #ifndef MIDI_VIA_SERIAL
   #ifndef DEB
     #ifdef DEBUG_ON
-      #define DEB(...) USBSerial.print(__VA_ARGS__) 
-      #define DEBF(...) USBSerial.printf(__VA_ARGS__) 
-      #define DEBUG(...) USBSerial.println(__VA_ARGS__) 
+      #if defined(CONFIG_IDF_TARGET_ESP32S3)
+        #define DEB(...) USBSerial.print(__VA_ARGS__) 
+        #define DEBF(...) USBSerial.printf(__VA_ARGS__) 
+        #define DEBUG(...) USBSerial.println(__VA_ARGS__) 
+      #else
+      
+        #define DEB(...) Serial.print(__VA_ARGS__) 
+        #define DEBF(...) Serial.printf(__VA_ARGS__) 
+        #define DEBUG(...) Serial.println(__VA_ARGS__)
+      #endif
     #else
       #define DEB(...)
       #define DEBF(...)
@@ -114,7 +121,11 @@ void IRAM_ATTR onTimer1() {
 void setup() {
 #ifdef DEBUG_ON
 #ifndef MIDI_VIA_SERIAL
-  USBSerial.begin(115200);
+  #if defined(CONFIG_IDF_TARGET_ESP32S3)
+    USBSerial.begin(115200);
+  #else
+    Serial.begin(115200);
+  #endif
   DEBUG("DEBUG Started");
   delay(1000);
 #endif

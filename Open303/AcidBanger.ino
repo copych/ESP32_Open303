@@ -226,7 +226,9 @@ static void send_midi_noteoff(byte chan, byte note) {
 static void init_midi() {
   //  Serial.begin(115200);
   //  MIDI.begin(MIDI_CHANNEL_OMNI);
+  #ifdef LED_BUILTIN
   pinMode(LED_BUILTIN, OUTPUT);
+  #endif
   for (int i = 0; i < ButLast; i++) {
     init_button(&buttons[i], button_pins[i], i + 1 );
   }
@@ -396,7 +398,10 @@ void sequencer_step(byte step) {
 #endif
   }
   if (step % 4 == 0 || step == 1) {
+    
+    #ifdef LED_BUILTIN
     digitalWrite(LED_BUILTIN, HIGH);
+    #endif
     #ifdef LOLIN_RGB
       pixels.setPixelColor(0, pixels.Color(rand() % 32, rand() % 32, rand() % 32));
       pixels.show();
@@ -406,7 +411,9 @@ void sequencer_step(byte step) {
     DEBUG(step);
 #endif
   }  else {
+    #ifdef LED_BUILTIN
     digitalWrite(LED_BUILTIN, LOW);
+    #endif
     #ifdef LOLIN_RGB
       pixels.setPixelColor(0, pixels.Color(0,0,0));
       pixels.show();
